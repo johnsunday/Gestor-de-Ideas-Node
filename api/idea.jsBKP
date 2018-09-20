@@ -1,0 +1,116 @@
+const express    = require('express');
+const bodyParser = require('body-parser');
+const moment     = require('moment');
+
+const app = express();
+
+var _ideas = [
+
+    	{id: 1, titulo: 'Idea nueva 1', descripcion:'Hacer un gestor de ideas con api rest...' },
+	{id: 2, titulo: 'Idea Nueva 2', descripcion:'lalalalalal' }
+
+];
+
+
+// parse body as json
+
+app.use(bodyParser.json());
+
+
+// all requests
+
+app.use((req, res, next) => {
+
+    console.log(`${req.method}: ${req.path} - ${moment().format(moment.HTML5_FMT.DATETIME_LOCAL_MS)}`);
+
+    next();
+
+});
+
+// get home
+
+app.get('/', (req, res) => {
+
+    let list = [];
+
+    _ideas.forEach((i) => {
+        list.push(`<li>${i.titulo} con id: ${i.id}</li>`);
+    });
+
+    res.send(
+        `<html>
+            <head>
+                <title>Ideas</title>
+            </head>
+            <body>
+                <ul>
+                    ${list.join('')}
+                </ul>            
+            </body>
+        </html>`
+    );
+
+});
+
+
+
+console.log("Adding routes...")
+// api
+app.get('/api/ideas', (req, res) => {
+
+    res.json(_ideas);
+
+});
+
+
+
+// get clients by id
+
+app.get('/api/ideas/:id', (req, res) => {
+
+    let idea = _ideas.find(i => i.id == req.params.id);
+
+    if(idea) {
+
+        res.json(idea);
+
+    } else {
+
+        res.status(404).end();
+    }
+});
+
+
+
+// add new client - Content Type: json
+
+app.post('/api/ideas', (req, res) => {
+
+    _ideas.push(req.body);
+
+    res.status(201).send(req.body);
+
+});
+
+
+
+app.delete('/api/ideas/:id', (req, res) => {
+
+    _ideas = _ideas.filter(i => i.id != req.params.id);
+//    _ideas = _ideas.filter(function(i) { return i.id != req.params.id; });
+    res.status(204).end();
+
+});
+
+console.log("Routes Added!")
+
+// start server
+
+app.listen(process.env.PORT || 3000, function () {
+
+    console.log('API andando con express...');
+
+});
+
+
+

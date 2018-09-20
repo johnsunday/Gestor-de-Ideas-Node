@@ -1,0 +1,45 @@
+<html ng-app='IdeasApp'>
+<head>
+
+  <!-- SCROLLS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+<style>
+    html                    { overflow-y:scroll; }
+    body                    { padding-top:50px; }
+    #idea-list              { margin-bottom:30px; }
+</style>
+<!-- SPELLS -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+  <script src="/public/ideacontroller.js"> </script>
+
+</head>
+<body ng-controller='ideasController'>
+
+  <ul>
+    <li ng-repeat='idea in ideas'>
+      <span>{{ idea.titulo }}</span>
+      <p>{{ idea.descripcion }}</p>
+      <p>fin listado</p>
+    </li>
+  </ul>
+
+
+  <div id="idea-form" class="row">
+      <div class="col-sm-8 col-sm-offset-2 text-center">
+          <form>
+              <div class="form-group">
+
+                  <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+                  <input type="text" class="form-control input-lg text-center" placeholder="Ingrese titulo" ng-model="formData.titulo">
+                  <input type="text" class="form-control input-lg text-center" placeholder="Ingresa descripcion" ng-model="formData.descripcion">
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg" ng-click="crearIdea()">Agregar</button>
+          </form>
+      </div>
+  </div>
+
+</body>
+</html>
